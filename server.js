@@ -10,7 +10,8 @@ const app = express();
 const PORT = process.env.PORT;
 
 //Database setup
-const conString = 'postgres://localhost:5432/books_app';
+const conString = process.env.DATABASE_URL;
+// const conString = 'postgres://localhost:5432/books_app';
 const client = new pg.Client(conString);
 client.connect();
 client.on('error', err => console.log(err));
