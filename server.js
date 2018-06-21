@@ -22,7 +22,7 @@ app.use(cors());
 
 // Endpoints
 app.get('/api/v1/books', (req, res) => {
-    console.log('One small step for man. One giant step for computer-kind (handling a GET request by a client')
+    console.log('These are not the droids you\'re looking for... However it is the response you\'re looking for')
     let SQL = `SELECT * FROM books;`;
     client.query(SQL)
     .then(results => res.send(results.rows))
@@ -79,7 +79,7 @@ app.get('/api/v1/books:id', (req, res) => {
 
 app.get('*', (req, res) => res.status(404).send('rip'));
 
-app.listen(PORT, () => console.log('The server is alive ITS ALIVE. It is listening on port ' + PORT));
+app.listen(PORT, () => console.log(`The server is listening on PORT: ${PORT}`));
 
 
 
