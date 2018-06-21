@@ -1,36 +1,85 @@
 'use strict';
 
-//application dependencies
+//Dependencies
 const express = require('express');
 const cors = require('cors');
 const pg = require('pg');
 
-//application setup
+// Setup
+
 const app = express();
 const PORT = process.env.PORT;
 
-//Database setup
-const conString = process.env.DATABASE_URL;
-// const conString = 'postgres://localhost:5432/books_app';
-const client = new pg.Client(conString);
+
+const client = new pg.Client(process.env.DATABASE_URL);
+
+
 client.connect();
 client.on('error', err => console.log(err));
 
-//application middleware
+//Middleware
 app.use(cors());
 
-//API Endpoints
+// Endpoints
 app.get('/api/v1/books', (req, res) => {
-    console.log('OMG i handling a git request by a client');
-    let SQL = 'SELECT * FROM books;';
+    console.log('One small step for man. One giant step for computer-kind (handling a GET request by a client')
+    let SQL = `SELECT * FROM books;`;
     client.query(SQL)
-        .then(results => res.send(results.rows))
-        .catch(console.log.error);
+    .then(results => res.send(results.rows))
+    .catch(console.error);
 });
 
-app.get('*', (req, res) => res.status(404).send('This route does not exist'));
+//.git for limited info
+app.get('/api/v1/books-limited', (req, res) => {
+    console.log('limited request')
+    let SQL = `
+        SELECT book_id, title, author, image_url FROM books;
+        `;
+    client.query(SQL)
+    .then(results => res.send(results.rows))
+    .catch(console.error);
+});
 
-app.listen(PORT, () => console.log(`The server is alive and well and listening on port ${PORT}`));
+//Inserting placeholder values
+app.post('/api/v1/books', (req, res) => {
+    let SQL = `INSERT INTO books_app(book_id, title, author, isbn, image_url, description)
+    VALUES ($1, $2, $3, $4, $5, $6);`;
+
+
+    let values = [
+        req.params.id,
+        req.body.title,
+        req.body.author,
+        req.body.isbn,
+        req.body.image_url,
+        req.body.description
+    ];
+
+    client.query(SQL, values)
+        .then(function () {
+        res.send('insert completed')
+        })
+        .catch(function (err) {
+            console.error(err);
+    })
+})
+
+
+app.get('/api/v1/books:id', (req, res) => {
+    console.log(req);
+    let SQL = `
+        SELECT * FROM books WHERE book_id=$1;
+        `;
+    
+
+    client.query(SQL)
+    .then(results => res.send(results.rows))
+    .catch(console.error);
+});
+
+app.get('*', (req, res) => res.status(404).send('rip'));
+
+app.listen(PORT, () => console.log('The server is alive ITS ALIVE. It is listening on port ' + PORT));
 
 
 
