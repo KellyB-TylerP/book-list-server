@@ -19,14 +19,15 @@ client.on('error', err => console.log(err));
 
 //Middleware
 app.use(cors());
+///////////////cam 2:58-3:29 
 
 // Endpoints
 app.get('/api/v1/books', (req, res) => {
     console.log('These are not the droids you\'re looking for... However it is the response you\'re looking for')
     let SQL = `SELECT * FROM books;`;
     client.query(SQL)
-    .then(results => res.send(results.rows))
-    .catch(console.error);
+        .then(results => res.send(results.rows))
+        .catch(console.error);
 });
 
 //.git for limited info
@@ -36,10 +37,16 @@ app.get('/api/v1/books-limited', (req, res) => {
         SELECT book_id, title, author, image_url FROM books;
         `;
     client.query(SQL)
-    .then(results => res.send(results.rows))
-    .catch(console.error);
+        .then(results => res.send(results.rows))
+        .catch(console.error);
 });
-
+//post route for form
+app.post('/api/v1/books', (req, res) => {
+    console.log('the post route is alive')
+    res.send('yo this is the post route talking')
+    let SQL = ""
+    /////
+});
 //Inserting placeholder values
 app.post('/api/v1/books', (req, res) => {
     let SQL = `INSERT INTO books_app(book_id, title, author, isbn, image_url, description)
@@ -57,11 +64,11 @@ app.post('/api/v1/books', (req, res) => {
 
     client.query(SQL, values)
         .then(function () {
-        res.send('insert completed')
+            res.send('insert completed')
         })
         .catch(function (err) {
             console.error(err);
-    })
+        })
 })
 
 
@@ -70,11 +77,11 @@ app.get('/api/v1/books:id', (req, res) => {
     let SQL = `
         SELECT * FROM books WHERE book_id=$1;
         `;
-    
+
 
     client.query(SQL)
-    .then(results => res.send(results.rows))
-    .catch(console.error);
+        .then(results => res.send(results.rows))
+        .catch(console.error);
 });
 
 app.get('*', (req, res) => res.status(404).send('rip'));
