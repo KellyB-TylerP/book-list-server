@@ -20,6 +20,7 @@ client.on('error', err => console.log(err));
 //Middleware
 app.use(cors());
 
+
 // Endpoints
 app.get('/api/v1/books', (req, res) => {
     console.log('One small step for man. One giant step for computer-kind (handling a GET request by a client')
@@ -64,6 +65,13 @@ app.post('/api/v1/books', (req, res) => {
     })
 })
 
+app.post('/api/v1/books', (req, res) => {
+    console.log('Its chya boi Posty');
+    res.send('Whaddup here come dat boi');
+    let SQL = '';
+    let values = [];
+    client.query(SQL, values).then();
+})
 
 app.get('/api/v1/books:id', (req, res) => {
     console.log(req);
