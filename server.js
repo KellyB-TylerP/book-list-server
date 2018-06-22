@@ -20,6 +20,7 @@ client.on('error', err => console.log(err));
 //Middleware
 app.use(cors());
 
+
 // Endpoints
 app.get('/api/v1/books', (req, res) => {
     console.log('These are not the droids you\'re looking for... However it is the response you\'re looking for')
@@ -64,6 +65,13 @@ app.post('/api/v1/books', (req, res) => {
     })
 })
 
+app.post('/api/v1/books', (req, res) => {
+    console.log('Its chya boi Posty');
+    res.send('Whaddup here come dat boi');
+    let SQL = '';
+    let values = [];
+    client.query(SQL, values).then();
+})
 
 app.get('/api/v1/books:id', (req, res) => {
     console.log(req);
